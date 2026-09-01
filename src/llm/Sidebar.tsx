@@ -5,6 +5,7 @@ import { IPhaseDef } from './walkthrough/WalkthroughTools';
 import { PhaseTimeline } from './PhaseTimeline';
 import { Commentary } from './Commentary';
 import { IProgramState } from './Program';
+import { resolveName } from './i18n';
 import { Popup, PopupPos } from '@/src/utils/Portal';
 import { useSubscriptions } from '../utils/hooks';
 
@@ -38,13 +39,13 @@ export const WalkthroughSidebar: React.FC = () => {
                 {walkthrough.phaseList.map((group, i) => {
 
                     return <div key={group.groupId} className={s.phaseGroup}>
-                        <div className={s.phaseGroupTitle}>{group.title}</div>
+                        <div className={s.phaseGroupTitle}>{resolveName(group.title)}</div>
 
                         {group.phases.map((phase, j) => {
                             let active = walkthrough.phase === phase.id;
 
                             return <div key={phase.id} className={clsx(s.phase, active && s.active)} onClick={ev => handlePhaseClick(ev, phase)}>
-                                <div className={s.phaseTitle}>{phase.title}</div>
+                                <div className={s.phaseTitle}>{resolveName(phase.title)}</div>
                             </div>;
                         })}
                     </div>;

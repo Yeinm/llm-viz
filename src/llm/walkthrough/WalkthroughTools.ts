@@ -442,11 +442,11 @@ export function hideFromBlock(state: IRenderState, layout: IGptModelLayout, targ
 
 export interface IPhaseGroup {
     groupId: PhaseGroup;
-    title: string;
+    title: string | (() => string);
     phases: IPhaseDef[];
 }
 
 export interface IPhaseDef {
     id: Phase;
-    title: string;
+    title: string | (() => string);
 }

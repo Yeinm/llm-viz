@@ -5,6 +5,7 @@ import { useProgramState } from './Sidebar';
 import { clamp } from '@/src/utils/data';
 import { lerp, lerpSmoothstep } from '@/src/utils/math';
 import { phaseToGroup, IWalkthrough, Phase } from './walkthrough/Walkthrough';
+import { L, resolveName } from './i18n';
 import { eventEndTime, ICommentary, isCommentary, ITimeInfo } from './walkthrough/WalkthroughTools';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faChevronLeft, faChevronRight, faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
@@ -12,7 +13,6 @@ import clsx from 'clsx';
 import { TocDiagram } from './components/TocDiagram';
 import { BlockText, DimensionText } from './components/CommentaryHelpers';
 import { useRequestAnimationFrame } from '../utils/hooks';
-import { L } from "./i18n";
 
 export function jumpToPhase(wt: IWalkthrough, phaseId: Phase) {
     wt.time = 0;
@@ -262,7 +262,7 @@ export const Commentary: React.FC = () => {
             <button className={clsx(s.btn, s.prevNextBtn)} onClick={() => handlePhaseDeltaClick(-1)}>
                 <FontAwesomeIcon icon={faChevronLeft} />
             </button>
-            <div className={s.chapterTitle}>{L('Chapter: ', '章节：')}{phase.title}</div>
+            <div className={s.chapterTitle}>{L('Chapter: ', '章节：')}{resolveName(phase.title)}</div>
             <button className={clsx(s.btn, s.prevNextBtn)} onClick={() => handlePhaseDeltaClick(1)}>
                 <FontAwesomeIcon icon={faChevronRight} />
             </button>
@@ -335,7 +335,11 @@ export function walkthroughToParagraphs(wt: IWalkthrough, nodes: INode[]) {
 
             if (i < c.values.length) {
                 let val = c.values[i];
-                if (isValidElement(val)) {
+                if (typeof val === 'string') {
+                    // inline bilingual text from L() interpolations
+                    let strPart = markupSimple(val);
+                    paraItems.push(<React.Fragment key={paraKeyId++}>{strPart}</React.Fragment>);
+                } else if (isValidElement(val)) {
                     paraItems.push(<React.Fragment key={paraKeyId++}>{val}</React.Fragment>)
                 }
                 if (val.insertInline) {
