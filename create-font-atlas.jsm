@@ -44,17 +44,21 @@ let commonOpts = {
     outputType: 'json',
     filename: 'fonts/font-atlas.png',
     reuse: 'fonts/font-atlas.cfg',
-    textureSize: [512, 256],
+    textureSize: [1024, 1024],
 };
+
+// 中文（及全角标点/希腊字母）字符集，来自 3D 场景内实际渲染的字符串（见 collect-cjk-chars.js）
+let cjkCharset = fs.readFileSync(path.join(__dirname, 'cjk-charset.txt'), 'utf8');
 
 async function runAll() {
     fs.rmSync(commonOpts.reuse, { force: true });
 
     let files = [];
 
-    files.push(await generateAndSave('fonts/Roboto-Regular.ttf', {
+    // 主字体：Noto Sans SC 同时覆盖拉丁 + 中文（渲染端默认使用第一个 face，无跨 face 回退）
+    files.push(await generateAndSave('fonts/NotoSansSC.ttf', {
         ...commonOpts,
-        charset: '! "#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~‧\\—Σγβσμε',
+        charset: '! "#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~‧\\—Σγβσμε' + cjkCharset,
     }, 'regular'));
 
     // math italic

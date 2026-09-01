@@ -3,6 +3,7 @@ import { Phase } from "./Walkthrough";
 import { commentary, DimStyle, IWalkthroughArgs, moveCameraTo, setInitialCamera } from "./WalkthroughTools";
 import { lerp, lerpSmoothstep } from "@/src/utils/math";
 import { processUpTo, startProcessBefore } from "./Walkthrough00_Intro";
+import { L } from "../i18n";
 
 export function walkthrough06_Projection(args: IWalkthroughArgs) {
     let { walkthrough: wt, state, layout, tools: { breakAfter, afterTime, c_blockRef, c_dimRef, cleanup } } = args;
@@ -19,11 +20,10 @@ export function walkthrough06_Projection(args: IWalkthroughArgs) {
 
     commentary(wt, null, 0)`
 
-After the self-attention process, we have outputs from each of the heads. These outputs are the
-appropriately mixed V vectors, influenced by the Q and K vectors.
+${L('After the self-attention process, we have outputs from each of the heads. These outputs are the appropriately mixed V vectors, influenced by the Q and K vectors.', '在自注意力（Self-Attention）过程之后，我们会得到来自每个头的输出。这些输出是经过恰当混合的 V 向量，同时受到了 Q 向量和 K 向量的影响。')}
 
-To combine the ${c_blockRef('output vectors', outBlocks)} from each head, we simply stack them on top of each other. So, for time
-${c_dimRef('t = 4', DimStyle.T)}, we go from 3 vectors of length ${c_dimRef('A = 16', DimStyle.A)} to 1 vector of length ${c_dimRef('C = 48', DimStyle.C)}.`;
+${L('To combine the ', '要将每个')}${c_blockRef(L('output vectors', '输出向量'), outBlocks)}${L(' from each head, we simply stack them on top of each other. So, for time', '组合起来，我们只需把它们上下堆叠在一起。因此，在时刻')}
+${c_dimRef('t = 4', DimStyle.T)}${L(', we go from 3 vectors of length ', '，我们从 3 个长度为 ')}${c_dimRef('A = 16', DimStyle.A)}${L(' to 1 vector of length ', ' 的向量，得到 1 个长度为 ')}${c_dimRef('C = 48', DimStyle.C)}${L('.', ' 的向量。')}`;
 
     breakAfter();
 
@@ -35,11 +35,10 @@ ${c_dimRef('t = 4', DimStyle.T)}, we go from 3 vectors of length ${c_dimRef('A =
 
     commentary(wt)`
 
-It's worth noting that in GPT, the length of the vectors within a head (${c_dimRef('A = 16', DimStyle.A)}) is equal to ${c_dimRef('C', DimStyle.C)} / num_heads.
-This ensures that when we stack them back together, we get the original length, ${c_dimRef('C', DimStyle.C)}.
+${L('It\'s worth noting that in GPT, the length of the vectors within a head (', '值得一提的是，在 GPT 中，单个头内向量的长度（')}${c_dimRef('A = 16', DimStyle.A)}${L(') is equal to ', '）等于 ')}${c_dimRef('C', DimStyle.C)}${L(' / num_heads.', ' / num_heads。')}
+${L('This ensures that when we stack them back together, we get the original length, ', '这保证了当我们把它们重新堆叠起来时，能够得到原始的长度 ')}${c_dimRef('C', DimStyle.C)}${L('.', '。')}
 
-From here, we perform the projection to get the output of the layer. This is a simple matrix-vector
-multiplication on a per-column basis, with a bias added.`;
+${L('From here, we perform the projection to get the output of the layer. This is a simple matrix-vector multiplication on a per-column basis, with a bias added.', '从这里开始，我们执行投影（Projection）以获得这一层的输出。这是一个逐列进行的简单矩阵-向量乘法，并加上偏置。')}`;
 
     breakAfter();
 
@@ -49,9 +48,7 @@ multiplication on a per-column basis, with a bias added.`;
 
     commentary(wt)`
 
-Now we have the output of the self-attention layer. Instead of passing this output directly to the
-next phase, we add it element-wise to the input embedding. This process, denoted by the green
-vertical arrow, is called the _residual connection_ or _residual pathway_.
+${L('Now we have the output of the self-attention layer. Instead of passing this output directly to the next phase, we add it element-wise to the input embedding. This process, denoted by the green vertical arrow, is called the _residual connection_ or _residual pathway_.', '现在我们得到了自注意力层的输出。与其把这个输出直接传给下一个阶段，我们把它逐元素地加到输入嵌入上。这个过程，用绿色垂直箭头表示，被称为_残差连接（Residual Connection）_或_残差通路_。')}
 `;
 
     breakAfter();
@@ -65,11 +62,9 @@ vertical arrow, is called the _residual connection_ or _residual pathway_.
 
     commentary(wt)`
 
-Like layer normalization, the residual pathway is important for enabling effective learning in deep
-neural networks.
+${L('Like layer normalization, the residual pathway is important for enabling effective learning in deep neural networks.', '与层归一化（Layer Normalization）类似，残差通路对于在深层神经网络中实现有效学习至关重要。')}
 
-Now with the result of self-attention in hand, we can pass it onto the next section of the transformer:
-the feed-forward network.
+${L('Now with the result of self-attention in hand, we can pass it onto the next section of the transformer: the feed-forward network.', '现在，我们已经得到了自注意力的结果，可以把它传给 Transformer 的下一个部分：前馈网络（Feed-Forward Network）。')}
 `;
 
     breakAfter();

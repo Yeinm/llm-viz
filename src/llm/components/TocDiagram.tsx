@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import { jumpToPhase } from '../Commentary';
 import { useProgramState } from '../Sidebar';
 import { Subscriptions } from '@/src/utils/hooks';
+import { L } from "../i18n";
 
 enum ElType {
     Cell,
@@ -96,24 +97,24 @@ export const TocDiagram: React.FC<{
 
     let structure: IEl = {
         type: ElType.Block, height: 0, color: '#eee', special: 'llm', padX: 2.0, padY: 1.0, id: 'llm', items: [
-            { type: ElType.Cell, label: 'tok embed', height: 1, width: 4, color: colors.tokEmbed, id: 'tokEmbed' },
+            { type: ElType.Cell, label: L('tok embed', 'token 嵌入'), height: 1, width: 4, color: colors.tokEmbed, id: 'tokEmbed' },
             { type: ElType.PosEmbed, height: 1.8, id: 'posEmbed' },
             { type: ElType.Block, height: 0, padX: 3, padY: 0, color: '#ddd', special: 'transformer', id: 'transformer', items: [
                 { type: ElType.Gap, height: 1.2, gapType: 'exit', arrow: true },
-                { type: ElType.Cell, height: 1, label: 'layer norm', width: widthStd, color: colors.ln, id: 'ln1' },
+                { type: ElType.Cell, height: 1, label: L('layer norm', '层归一化'), width: widthStd, color: colors.ln, id: 'ln1' },
                 { type: ElType.Gap, height: exitGap, gapType: 'multihead', arrow: true },
-                { type: ElType.Cell, height: 2, label: ['multi-head, causal', 'self-attention'], width: widthMultihead, color: colors.multihead, id: 'selfAttend' },
+                { type: ElType.Cell, height: 2, label: [L('multi-head, causal', '多头、因果'), L('self-attention', '自注意力')], width: widthMultihead, color: colors.multihead, id: 'selfAttend' },
                 { type: ElType.Gap, height: plusGap, gapType: 'add' },
                 { type: ElType.Gap, height: exitGap, gapType: 'exit', arrow: true },
-                { type: ElType.Cell, height: 1, label: 'layer norm', width: widthStd, color: colors.ln, id: 'ln2' },
+                { type: ElType.Cell, height: 1, label: L('layer norm', '层归一化'), width: widthStd, color: colors.ln, id: 'ln2' },
                 { type: ElType.Gap, height: smallGap, arrow: true },
-                { type: ElType.Cell, height: 2, label: ['feed', 'forward'], width: widthFeedForward, color: colors.feedForward, id: 'feedForward' },
+                { type: ElType.Cell, height: 2, label: [L('feed', '前馈'), L('forward', '网络')], width: widthFeedForward, color: colors.feedForward, id: 'feedForward' },
                 { type: ElType.Gap, height: plusGap, gapType: 'add' },
             ] },
             { type: ElType.Gap, height: smallGap, arrow: true },
-            { type: ElType.Cell, height: 1, label: 'layer norm', width: widthStd, color: colors.ln, id: 'lnf' },
+            { type: ElType.Cell, height: 1, label: L('layer norm', '层归一化'), width: widthStd, color: colors.ln, id: 'lnf' },
             { type: ElType.Gap, height: smallGap, arrow: true },
-            { type: ElType.Cell, label: 'linear', height: 1, width: widthStd, color: colors.linear, id: 'linear' },
+            { type: ElType.Cell, label: L('linear', '线性'), height: 1, width: widthStd, color: colors.linear, id: 'linear' },
             { type: ElType.Gap, height: smallGap, arrow: true },
             { type: ElType.Cell, label: 'softmax', height: 1, width: widthStd, color: colors.softmax, id: 'softmaxOut' },
         ]
@@ -128,19 +129,19 @@ export const TocDiagram: React.FC<{
         entryGroups[entryGroups.length - 1].entries.push(entry);
     }
 
-    entryGroups.push({ groupName: 'Intro', entries: [] });
-    makeEntry(Phase.Intro_Intro, 'Introduction', []);
-    makeEntry(Phase.Intro_Prelim, 'Preliminaries', []);
+    entryGroups.push({ groupName: L('Intro', '入门'), entries: [] });
+    makeEntry(Phase.Intro_Intro, L('Introduction', '介绍'), []);
+    makeEntry(Phase.Intro_Prelim, L('Preliminaries', '预备知识'), []);
 
-    entryGroups.push({ groupName: 'Components', entries: [] });
-    makeEntry(Phase.Input_Detail_Embedding, 'Embedding', ['tokEmbed', 'posEmbed'], true);
-    makeEntry(Phase.Input_Detail_LayerNorm, 'Layer Norm', ['ln1', 'ln2', 'lnf']);
-    makeEntry(Phase.Input_Detail_SelfAttention, 'Self Attention', ['selfAttend']);
-    makeEntry(Phase.Input_Detail_Projection, 'Projection', ['selfAttend']);
+    entryGroups.push({ groupName: L('Components', '组件'), entries: [] });
+    makeEntry(Phase.Input_Detail_Embedding, L('Embedding', '嵌入'), ['tokEmbed', 'posEmbed'], true);
+    makeEntry(Phase.Input_Detail_LayerNorm, L('Layer Norm', '层归一化'), ['ln1', 'ln2', 'lnf']);
+    makeEntry(Phase.Input_Detail_SelfAttention, L('Self Attention', '自注意力'), ['selfAttend']);
+    makeEntry(Phase.Input_Detail_Projection, L('Projection', '投影'), ['selfAttend']);
     makeEntry(Phase.Input_Detail_Mlp, 'MLP', ['feedForward']);
     makeEntry(Phase.Input_Detail_Transformer, 'Transformer', ['transformer']);
     makeEntry(Phase.Input_Detail_Softmax, 'Softmax', ['softmaxOut']);
-    makeEntry(Phase.Input_Detail_Output, 'Output', ['lnf', 'linear', 'softmaxOut'], true);
+    makeEntry(Phase.Input_Detail_Output, L('Output', '输出'), ['lnf', 'linear', 'softmaxOut'], true);
 
     function calcSizes(el: IEl): void {
         el.padX = el.padX ?? 0;
@@ -300,7 +301,7 @@ export const TocDiagram: React.FC<{
 
                 content = <>
                     <line className={s.gap} x1={center.x} x2={center.x} y1={0} y2={size.y} stroke={colors.line} />
-                    <text fontSize={11} textAnchor='end' x={textX} y={center.y + 0.25 * fontSize}>pos embed</text>
+                    <text fontSize={11} textAnchor='end' x={textX} y={center.y + 0.25 * fontSize}>{L('pos embed', '位置嵌入')}</text>
                     <circle cx={embedX} cy={center.y} r={10} stroke={colors.line} fill='none' />;
                     <line x1={embedX + 14} x2={center.x - 10} y1={center.y} y2={center.y} stroke={colors.line} strokeWidth={1} />;
                     <text textAnchor='middle' x={embedX} y={center.y + 5} fontSize={18}>~</text>
@@ -350,7 +351,7 @@ export const TocDiagram: React.FC<{
         let ctx = canvas.getContext('2d')!;
         ctx.font = '16px Merriweather';
 
-        let textSegs = ['How', ' to', ' predict'];
+        let textSegs = [L('How', '如何'), L(' to', '进行'), L(' predict', '预测')];
         let ids = [2437, 284, 4331];
 
         let colors = [
@@ -369,7 +370,7 @@ export const TocDiagram: React.FC<{
             offsets.push(offsets[offsets.length - 1] + widths[widths.length - 1]);
         }
 
-        let egTextSegs = [' text', ' tokens', ' words'];
+        let egTextSegs = [L(' text', '文本'), L(' tokens', '词元'), L(' words', '词语')];
         let egPct = [0.8, 0.5, 0.3];
         let egIds = [2420, 16326, 2456];
         let egWidths = egTextSegs.map(seg => ctx.measureText(seg).width + 1);
@@ -560,7 +561,7 @@ export const TocDiagram: React.FC<{
     let titleAbove = false;
 
     return <div>
-        {titleAbove && <div className={s.tocTitle}>Table of Contents</div>}
+        {titleAbove && <div className={s.tocTitle}>{L('Table of Contents', '目录')}</div>}
         <div className={s.tocDiagram}>
             <svg viewBox={`0 0 310 ${height}`} width={'310px'} height={height} ref={setDiagramEl}>
                 {exampleInfo?.node}
@@ -571,7 +572,7 @@ export const TocDiagram: React.FC<{
                 {renderTocToDigramLines()}
             </svg>
             <div className={s.toc}>
-                {!titleAbove && <div className={s.tocTitle}>Table of Contents</div>}
+                {!titleAbove && <div className={s.tocTitle}>{L('Table of Contents', '目录')}</div>}
                 {entryGroups.map((group, i) => {
 
                     return <React.Fragment key={i}>

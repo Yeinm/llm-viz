@@ -19,6 +19,7 @@ import { walkthrough06_Projection } from "./Walkthrough06_Projection";
 import { walkthrough07_Mlp } from "./Walkthrough07_Mlp";
 import { walkthrough08_Transformer } from "./Walkthrough08_Transformer";
 import { walkthrough09_Output } from "./Walkthrough09_Output";
+import { L } from "../i18n";
 
 
 /**
@@ -85,23 +86,23 @@ export function initWalkthrough() {
         phaseTransitiveData: null as any,
         phaseList: [{
             groupId: PhaseGroup.Intro,
-            title: 'Introduction',
+            title: L('Introduction', '介绍'),
             phases: [
-                { id: Phase.Intro_Intro, title: 'Overview' },
-                { id: Phase.Intro_Prelim, title: 'Preliminary' },
+                { id: Phase.Intro_Intro, title: L('Overview', '总览') },
+                { id: Phase.Intro_Prelim, title: L('Preliminary', '预备知识') },
             ],
         }, {
             groupId: PhaseGroup.Detailed_Input,
-            title: 'Detailed',
+            title: L('Detailed', '详细讲解'),
             phases: [
-                { id: Phase.Input_Detail_Embedding, title: 'Embedding' },
-                { id: Phase.Input_Detail_LayerNorm, title: 'Layer Norm' },
-                { id: Phase.Input_Detail_SelfAttention, title: 'Self Attention' },
-                { id: Phase.Input_Detail_Projection, title: 'Projection' },
-                { id: Phase.Input_Detail_Mlp, title: 'MLP' },
-                { id: Phase.Input_Detail_Transformer, title: 'Transformer' },
-                { id: Phase.Input_Detail_Softmax, title: 'Softmax' },
-                { id: Phase.Input_Detail_Output, title: 'Output' },
+                { id: Phase.Input_Detail_Embedding, title: L('Embedding', '嵌入') },
+                { id: Phase.Input_Detail_LayerNorm, title: L('Layer Norm', '层归一化') },
+                { id: Phase.Input_Detail_SelfAttention, title: L('Self Attention', '自注意力') },
+                { id: Phase.Input_Detail_Projection, title: L('Projection', '投影') },
+                { id: Phase.Input_Detail_Mlp, title: L('MLP', 'MLP') },
+                { id: Phase.Input_Detail_Transformer, title: L('Transformer', 'Transformer 模块') },
+                { id: Phase.Input_Detail_Softmax, title: L('Softmax', 'Softmax') },
+                { id: Phase.Input_Detail_Output, title: L('Output', '输出') },
             ],
         }] as IPhaseGroup[],
     };
@@ -201,7 +202,7 @@ export function walkthroughDetailed(args: IWalkthroughArgs) {
 
     case Phase.Input_First: {
         let t0 = c_str('', 0);
-        let c = commentary`These vectors now pass through the stages of the model, going through a series of transformers.${t0}`;
+        let c = commentary`${L('These vectors now pass through the stages of the model, going through a series of transformers.', '这些向量现在依次通过模型的各个阶段，经过一系列 Transformer（变换器）。')}${t0}`;
         let t1 = atEvent(t0);
         let t1a = afterTime(t1, 0.0, 2.0);
         let t2 = afterTime(t1a, 5, 0.2);
@@ -243,14 +244,14 @@ export function walkthroughDetailed(args: IWalkthroughArgs) {
         t0_showAll.t = 1.0;
 
         let tokEmbed = layout.tokEmbedObj;
-        drawTextOnModel(render, 'token-embedding matrix', new Vec3(tokEmbed.x - layout.margin, tokEmbed.y + tokEmbed.dy / 4, 0), {
+        drawTextOnModel(render, L('token-embedding matrix', '词元嵌入矩阵'), new Vec3(tokEmbed.x - layout.margin, tokEmbed.y + tokEmbed.dy / 4, 0), {
             align: TextAlignHoriz.Right,
             valign: TextAlignVert.Middle,
             color: new Vec4(0,0,0,1).mul(t0_showAll.t),
             size: 3,
         });
         let posEmbed = layout.posEmbedObj;
-        drawTextOnModel(render, 'position-embedding matrix', new Vec3(posEmbed.x + posEmbed.dx + layout.margin, tokEmbed.y + tokEmbed.dy / 4, 0), {
+        drawTextOnModel(render, L('position-embedding matrix', '位置嵌入矩阵'), new Vec3(posEmbed.x + posEmbed.dx + layout.margin, tokEmbed.y + tokEmbed.dy / 4, 0), {
             align: TextAlignHoriz.Left,
             valign: TextAlignVert.Middle,
             color: new Vec4(0,0,0,1).mul(t0_showAll.t),
@@ -269,7 +270,7 @@ export function walkthroughDetailed(args: IWalkthroughArgs) {
     } break;
     case Phase.Input_Detail_TokEmbed: {
         let tStr = c_str('t', 1);
-        let c = commentary`Let's start at the top. To compute the vectors at each time ${tStr} we do a couple of steps:`;
+        let c = commentary`${L('Let\'s start at the top. To compute the vectors at each time ', '我们从顶部开始。要计算每个时刻 ')}${tStr}${L(' we do a couple of steps:', ' 的向量，我们需要做几个步骤：')}`;
 
         moveCameraTo(state, atTime(0), new Vec3(0, 0, 0), new Vec3());
 
@@ -298,9 +299,9 @@ export function walkthroughDetailed(args: IWalkthroughArgs) {
             splitGrid(layout, layout.idxObj   , Dim.X, idx + 0.5, split);
         }
 
-        let embedMtx = c_str('token embedding matrix');
+        let embedMtx = c_str(L('token embedding matrix', '词元嵌入矩阵'));
         let tokCol = c_str('j');
-        commentaryPara(c)`\n\n1. From the ${embedMtx}, select the ${tokCol}'th column.`;
+        commentaryPara(c)`\n\n${L('1. From the ', '1. 从 ')}${embedMtx}${L(', select the ', ' 中选取第 ')}${tokCol}${L('\'th column.', ' 列。')}`;
 
         let embedOffColor = new Vec4(0.5,0.5,0.5).mul(0.6);
 

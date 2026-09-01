@@ -1,4 +1,5 @@
 import { IWalkthrough, Phase } from "./Walkthrough";
+import { L } from "../i18n";
 import { Colors, commentary, DimStyle, dimStyleColor, embed, ITimeInfo, IWalkthroughArgs, moveCameraTo, phaseTools, setInitialCamera } from "./WalkthroughTools";
 import s from './Walkthrough.module.scss';
 import { Dim, Vec3, Vec4 } from "@/src/utils/vector";
@@ -58,10 +59,10 @@ export function walkthroughIntro(args: IWalkthroughArgs) {
 
     setInitialCamera(state, new Vec3(184.744, 0.000, -636.820), new Vec3(296.000, 16.000, 13.500));
 
-    let c0 = commentary(wt, null, 0)`Welcome to the walkthrough of the GPT large language model! Here we'll explore the model _nano-gpt_, with a mere 85,000 parameters.
+    let c0 = commentary(wt, null, 0)`${L('Welcome to the walkthrough of the GPT large language model! Here we\'ll explore the model _nano-gpt_, with a mere 85,000 parameters.', '欢迎来到 GPT 大语言模型（Large Language Model）的讲解！在这里，我们将一起探索名为 _nano-gpt_ 的模型，它仅有 85,000 个参数。')}
 
-Its goal is a simple one: take a sequence of six letters: ${embed(ExampleInputOutput)}
-and sort them in alphabetical order, i.e. to "ABBBCC".`;
+${L('Its goal is a simple one: take a sequence of six letters: ', '它的目标很简单：接收一个六个字母组成的序列：')}${embed(ExampleInputOutput)}
+${L('and sort them in alphabetical order, i.e. to "ABBBCC".', '并按字母顺序排序，即得到 "ABBBCC"。')}`;
 
     if (c0.t > 0) {
         for (let cube of layout.cubes) {
@@ -93,12 +94,12 @@ and sort them in alphabetical order, i.e. to "ABBBCC".`;
 
     breakAfter();
 
-    let tokenStr = c_str('_token_', 0, DimStyle.Token);
-    let tokenIdxStr = c_str('_token index_', 0, DimStyle.TokenIdx);
+    let tokenStr = c_str(L('_token_', '_词元（Token）_'), 0, DimStyle.Token);
+    let tokenIdxStr = c_str(L('_token index_', '_词元索引（Token Index）_'), 0, DimStyle.TokenIdx);
 
-    commentary(wt, t6)`We call each of these letters a ${tokenStr}, and the set of the model's different tokens make up its _vocabulary_:${embed(TokenVocab)}
+    commentary(wt, t6)`${L('We call each of these letters a ', '我们把这里的每个字母称为一个 ')}${tokenStr}${L(', and the set of the model\'s different tokens make up its _vocabulary_:', '，而模型中所有不同的词元就构成了它的_词汇表（Vocabulary）_：')}${embed(TokenVocab)}
 
-    From this table, each token is assigned a number, its ${tokenIdxStr}. And now we can enter this sequence of numbers into the model:${embed(ExampleTokenValues)}\n`;
+    ${L('From this table, each token is assigned a number, its ', '从这张表中，每个词元都被分配一个数字，即它的 ')}${tokenIdxStr}${L('. And now we can enter this sequence of numbers into the model:', '。现在我们可以把这串数字输入模型：')}${embed(ExampleTokenValues)}\n`;
     breakAfter();
 
     let t7 = afterTime(null, 1.5, 0.5);
@@ -129,8 +130,8 @@ and sort them in alphabetical order, i.e. to "ABBBCC".`;
 
     breakAfter();
 
-    let c5 = commentary(wt)`In the 3d view, each green cell represents a number being processed, and each blue cell is a weight. ${embed(GreenBlueCells)}
-    Each number in the sequence first gets turned into a 48 element vector (a size chosen for this particular model). This is called an _embedding_.`;
+    let c5 = commentary(wt)`${L('In the 3d view, each green cell represents a number being processed, and each blue cell is a weight. ', '在 3D 视图中，每个绿色单元格代表一个正在被处理的数字，每个蓝色单元格代表一个权重。')}${embed(GreenBlueCells)}
+    ${L('Each number in the sequence first gets turned into a 48 element vector (a size chosen for this particular model). This is called an _embedding_.', '序列中的每个数字首先会被转换成一个 48 维向量（这是为这个特定模型选择的维度大小）。这被称为_嵌入（Embedding）_。')}`;
     breakAfter(c5);
 
     {
@@ -166,7 +167,7 @@ and sort them in alphabetical order, i.e. to "ABBBCC".`;
     }
 
     breakAfter();
-    commentary(wt)`The embedding is then passed through the model, going through a series of layers, called transformers, before reaching the bottom.`;
+    commentary(wt)`${L('The embedding is then passed through the model, going through a series of layers, called transformers, before reaching the bottom.', '嵌入结果随后被送入模型，经过一系列被称为变换器（Transformer）的层，最终到达模型的底部。')}`;
     breakAfter();
 
     {
@@ -220,11 +221,11 @@ and sort them in alphabetical order, i.e. to "ABBBCC".`;
         }
     }
 
-    commentary(wt)`So what's the output? A prediction of the next token in the sequence. So at the 6th entry, we get probabilities that the next token is
-        going to be 'A', 'B', or 'C'.`
+    commentary(wt)`${L('So what\'s the output? A prediction of the next token in the sequence. So at the 6th entry, we get probabilities that the next token is', '那么输出是什么呢？是对序列中下一个词元的预测。因此，在第 6 个位置，我们会得到下一个词元是')}
+        ${L("going to be 'A', 'B', or 'C'.", "'A'、'B' 或 'C' 的概率。")}`
 
-    commentary(wt)`In this case, the model is pretty sure it's going to be 'A'. Now, we can feed this prediction back into the top of the model, and repeat
-    the entire process.`;
+    commentary(wt)`${L("In this case, the model is pretty sure it's going to be 'A'. Now, we can feed this prediction back into the top of the model, and repeat", "在这个例子中，模型相当确信下一个词元会是 'A'。现在，我们可以把这个预测重新送回到模型的顶部，然后重复")}
+    ${L('the entire process.', '整个过程。')}`;
 
     breakAfter();
 }
@@ -393,10 +394,10 @@ const TokenVocab: React.FC = () => {
         <table className={s.table}>
             <tbody>
                 <tr className={s.tokString} style={{ color: dimStyleColor(DimStyle.Token).toHexColor() }}>
-                    <th>token</th><td>A</td><td>B</td><td>C</td>
+                    <th>{L('token', '词元')}</th><td>A</td><td>B</td><td>C</td>
                 </tr>
                 <tr className={s.tokIndex} style={{ color: dimStyleColor(DimStyle.TokenIdx).toHexColor() }}>
-                    <th>index</th><td>0</td><td>1</td><td>2</td>
+                    <th>{L('index', '索引')}</th><td>0</td><td>1</td><td>2</td>
                 </tr>
             </tbody>
         </table>
@@ -416,12 +417,12 @@ const GreenBlueCells: React.FC = () => {
             <div className={s.cellInfoCol}>
                 <Cell nums={greenNums} color={greenColor} mul={0.5} />
                 <Graph nums={greenNums} color={greenColor} setNums={setGreenNums} />
-                <div className={s.cellInfoText}>being processed</div>
+                <div className={s.cellInfoText}>{L('being processed', '正在处理')}</div>
             </div>
             <div className={s.cellInfoCol}>
                 <Cell nums={blueNums} color={blueColor} mul={1} />
                 <Graph nums={blueNums} color={blueColor} setNums={setBlueNums} />
-                <div className={s.cellInfoText}>weights</div>
+                <div className={s.cellInfoText}>{L('weights', '权重')}</div>
             </div>
         </div>
     </div>

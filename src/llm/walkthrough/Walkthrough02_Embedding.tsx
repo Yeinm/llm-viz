@@ -1,4 +1,5 @@
 import { duplicateGrid, splitGrid } from "../Annotations";
+import { L } from "../i18n";
 import { getBlockValueAtIdx } from "../components/DataFlow";
 import { IBlkDef } from "../GptModelLayout";
 import { drawText, IFontOpts, measureText } from "../render/fontRender";
@@ -21,11 +22,11 @@ export function walkthrough02_Embedding(args: IWalkthroughArgs) {
     wt.dimHighlightBlocks = [layout.idxObj, layout.tokEmbedObj, layout.posEmbedObj, layout.residual0];
 
     commentary(wt)`
-We saw previously how the tokens are mapped to a sequence of integers using a simple lookup table.
-These integers, the ${c_blockRef('_token indices_', state.layout.idxObj, DimStyle.TokenIdx)}, are the first and only time we see integers in the model.
-From here on out, we're using floats (decimal numbers).
+${L('We saw previously how the tokens are mapped to a sequence of integers using a simple lookup table.', '我们之前已经看到，词元是如何通过一张简单的查找表（lookup table）被映射为整数序列的。')}
+${L('These integers, the ', '这些整数，即 ')}${c_blockRef(L('_token indices_', '_词元索引_'), state.layout.idxObj, DimStyle.TokenIdx)}${L(', are the first and only time we see integers in the model.', '，是我们在模型中第一次也是唯一一次看到整数。')}
+${L('From here on out, we\'re using floats (decimal numbers).', '从此以后，我们将全部使用浮点数（小数）。')}
 
-Let's take a look at how the 4th token (index 3) is used to generate the 4th column vector of our ${c_blockRef('_input embedding_', state.layout.residual0)}.`;
+${L('Let\'s take a look at how the 4th token (index 3) is used to generate the 4th column vector of our ', '让我们看看第 4 个词元（索引为 3）是如何被用来生成 ')}${c_blockRef(L('_input embedding_', '_输入嵌入（Input Embedding）_'), state.layout.residual0)}${L('.', ' 的第 4 列向量的。')}`;
     breakAfter();
 
     let t_moveCamera = afterTime(null, 1.0);
@@ -34,10 +35,10 @@ Let's take a look at how the 4th token (index 3) is used to generate the 4th col
     breakAfter();
 
     commentary(wt)`
-We use the token index (in this case ${c_str('B', DimStyle.Token)} = ${c_dimRef('1', DimStyle.TokenIdx)}) to select the 2nd column of the ${c_blockRef('_token embedding matrix_', state.layout.tokEmbedObj)} on the left.
-Note we're using 0-based indexing here, so the first column is at index 0.
+${L('We use the token index (in this case ', '我们使用词元索引（这里 ')}${c_str('B', DimStyle.Token)}${L(' = ', ' = ')}${c_dimRef('1', DimStyle.TokenIdx)}${L(') to select the 2nd column of the ', '）来选择左侧 ')}${c_blockRef(L('_token embedding matrix_', '_词元嵌入矩阵_'), state.layout.tokEmbedObj)}${L(' on the left.', ' 的第 2 列。')}
+${L('Note we\'re using 0-based indexing here, so the first column is at index 0.', '请注意，这里使用的是从 0 开始的索引，所以第 1 列位于索引 0。')}
 
-This produces a column vector of size ${c_dimRef('_C_ = 48', DimStyle.C)}, which we describe as the token embedding.
+${L('This produces a column vector of size ', '这会生成一个大小为 ')}${c_dimRef('_C_ = 48', DimStyle.C)}${L(', which we describe as the token embedding.', ' 的列向量，我们称之为词元嵌入（Token Embedding）。')}
     `;
     breakAfter();
 
@@ -47,9 +48,9 @@ This produces a column vector of size ${c_dimRef('_C_ = 48', DimStyle.C)}, which
     breakAfter();
 
     commentary(wt)`
-And since we're looking at our token ${c_str('B', DimStyle.Token)} in the 4th _position_ (t = ${c_dimRef('3', DimStyle.T)}), we'll take the 4th column of the ${c_blockRef('_position embedding matrix_', state.layout.posEmbedObj)}.
+${L('And since we\'re looking at our token ', '既然我们观察的是位于第 4 个 _位置（Position）_ 处的词元 ')}${c_str('B', DimStyle.Token)}${L(' in the 4th _position_ (t = ', '（t = ')}${c_dimRef('3', DimStyle.T)}${L('), we\'ll take the 4th column of the ', '），我们将取 ')}${c_blockRef(L('_position embedding matrix_', '_位置嵌入矩阵_'), state.layout.posEmbedObj)}${L('.', ' 的第 4 列。')}
 
-This also produces a column vector of size ${c_dimRef('_C_ = 48', DimStyle.C)}, which we describe as the position embedding.
+${L('This also produces a column vector of size ', '同样，这也会生成一个大小为 ')}${c_dimRef('_C_ = 48', DimStyle.C)}${L(', which we describe as the position embedding.', ' 的列向量，我们称之为位置嵌入（Position Embedding）。')}
     `;
     breakAfter();
 
@@ -58,9 +59,9 @@ This also produces a column vector of size ${c_dimRef('_C_ = 48', DimStyle.C)}, 
     breakAfter();
 
     commentary(wt)`
-Note that both of these position and token embeddings are learned during training (indicated by their blue color).
+${L('Note that both of these position and token embeddings are learned during training (indicated by their blue color).', '请注意，位置嵌入和词元嵌入都是在训练过程中学习得到的（这一点由它们的蓝色表示）。')}
 
-Now that we have these two column vectors, we simply add them together to produce another column vector of size ${c_dimRef('_C_ = 48', DimStyle.C)}.
+${L('Now that we have these two column vectors, we simply add them together to produce another column vector of size ', '现在我们已经有了这两个列向量，只需将它们相加，就能得到另一个大小为 ')}${c_dimRef('_C_ = 48', DimStyle.C)}${L('.', ' 的列向量。')}
 `;
 
     breakAfter();
@@ -76,7 +77,7 @@ Now that we have these two column vectors, we simply add them together to produc
     breakAfter();
 
     commentary(wt)`
-We now run this same process for all of the tokens in the input sequence, creating a set of vectors which incorporate both the token values and their positions.
+${L('We now run this same process for all of the tokens in the input sequence, creating a set of vectors which incorporate both the token values and their positions.', '现在，我们对输入序列中的所有词元重复同样的过程，得到一组既包含词元值、又包含其位置的向量。')}
 
 `;
 
@@ -87,15 +88,15 @@ We now run this same process for all of the tokens in the input sequence, creati
     breakAfter();
 
     commentary(wt)`
-Feel free to hover over individual cells on the ${c_blockRef('_input embedding_', state.layout.residual0)} matrix to see the computations and their sources.
+${L('Feel free to hover over individual cells on the ', '你可以随时将鼠标悬停在 ')}${c_blockRef(L('_input embedding_', '_输入嵌入_'), state.layout.residual0)}${L(' matrix to see the computations and their sources.', ' 矩阵的各个单元格上，查看相应的计算过程及其数据来源。')}
 
-We see that running this process for all the tokens in the input sequence produces a matrix of size ${c_dimRef('_T_', DimStyle.T)} x ${c_dimRef('_C_', DimStyle.C)}.
-The ${c_dimRef('_T_', DimStyle.T)} stands for ${c_dimRef('_time_', DimStyle.T)}, i.e., you can think of tokens later in the sequence as later in time.
-The ${c_dimRef('_C_', DimStyle.C)} stands for ${c_dimRef('_channel_', DimStyle.C)}, but is also referred to as "feature" or "dimension" or "embedding size". This length, ${c_dimRef('_C_', DimStyle.C)},
-is one of the several "hyperparameters" of the model, and is chosen by the designer to in a tradeoff between model size and performance.
+${L('We see that running this process for all the tokens in the input sequence produces a matrix of size ', '我们看到，对输入序列中的所有词元重复这一过程，会得到一个大小为 ')}${c_dimRef('_T_', DimStyle.T)}${L(' x ', ' x ')}${c_dimRef('_C_', DimStyle.C)}${L('.', ' 的矩阵。')}
+${L('The ', '其中 ')}${c_dimRef('_T_', DimStyle.T)}${L(' stands for ', ' 代表 ')}${c_dimRef(L('_time_', '_时间（time）_'), DimStyle.T)}${L(', i.e., you can think of tokens later in the sequence as later in time.', '，也就是说，你可以把序列中靠后的词元理解为时间上更靠后。')}
+${L('The ', '而 ')}${c_dimRef('_C_', DimStyle.C)}${L(' stands for ', ' 代表 ')}${c_dimRef(L('_channel_', '_通道（channel）_'), DimStyle.C)}${L(', but is also referred to as "feature" or "dimension" or "embedding size". This length, ', '，但它也被称为「特征（feature）」「维度（dimension）」或「嵌入大小（embedding size）」。这个长度 ')}${c_dimRef('_C_', DimStyle.C)}${L(',', '，')}
+${L('is one of the several "hyperparameters" of the model, and is chosen by the designer to in a tradeoff between model size and performance.', '是模型的若干「超参数（hyperparameter）」之一，由设计者在模型大小与性能之间权衡后选定。')}
 
-This matrix, which we'll refer to as the ${c_blockRef('_input embedding_', state.layout.residual0)} is now ready to be passed down through the model.
-This collection of ${c_dimRef('T', DimStyle.T)} columns each of length ${c_dimRef('C', DimStyle.C)} will become a familiar sight throughout this guide.
+${L('This matrix, which we\'ll refer to as the ', '这个矩阵，也就是我们所说的 ')}${c_blockRef(L('_input embedding_', '_输入嵌入_'), state.layout.residual0)}${L(' is now ready to be passed down through the model.', '，现在可以向下传入模型了。')}
+${L('This collection of ', '这种由 ')}${c_dimRef('T', DimStyle.T)}${L(' columns each of length ', ' 列组成、每列长度为 ')}${c_dimRef('C', DimStyle.C)}${L(' will become a familiar sight throughout this guide.', ' 的集合，将会在本指南中反复出现，成为你熟悉的景象。')}
 `;
 
     cleanup(t9_cleanupInstant, [t3_moveTokenEmbed, t5_movePosEmbed, t6_plusSymAnim, t7_addAnim, t8_placeAnim]);

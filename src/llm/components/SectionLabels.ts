@@ -6,6 +6,7 @@ import { IRenderState } from "../render/modelRender";
 import { lerp } from "@/src/utils/math";
 import { Mat4f } from "@/src/utils/matrix";
 import { Vec3, Vec4 } from "@/src/utils/vector";
+import { L } from "../i18n";
 
 export function drawBlockLabels(state: IRenderState, layout: IGptModelLayout) {
 
@@ -20,7 +21,7 @@ export function drawBlockLabels(state: IRenderState, layout: IGptModelLayout) {
         let color = baseColor.mul(layout.embedLabel.visible);
         let tl = new Vec3(layout.tokEmbedObj.x - layout.margin * 2, layout.tokEmbedObj.y, 0);
         let br = new Vec3(layout.tokEmbedObj.x - layout.margin * 2, layout.tokEmbedObj.y + layout.tokEmbedObj.dy, 0);
-        drawSectionLabel(state, "Embedding", tl, br, { color, fontSize: 6, pad: 4 });
+        drawSectionLabel(state, L("Embedding", "嵌入"), tl, br, { color, fontSize: 6, pad: 4 });
     }
 
     let transformerIdx = 0;
@@ -49,7 +50,7 @@ export function drawBlockLabels(state: IRenderState, layout: IGptModelLayout) {
             let color = baseColor.mul(block.attnResidual.opacity * block.selfAttendLabel.visible);
             let tl = new Vec3(attnLeft, blockTop, 0);
             let br = new Vec3(attnLeft, attnProjBot, 0);
-            drawSectionLabel(state, `Self-attention`, tl, br, { color, fontSize: 12 });
+            drawSectionLabel(state, L(`Self-attention`, `自注意力`), tl, br, { color, fontSize: 12 });
         }
 
         {
@@ -63,7 +64,7 @@ export function drawBlockLabels(state: IRenderState, layout: IGptModelLayout) {
             let color = baseColor.mul(block.attnOut.opacity * block.projLabel.visible);
             let tl = new Vec3(attnLabelLeft, attnProjTop, 0);
             let br = new Vec3(attnLabelLeft, attnProjBot, 0);
-            drawSectionLabel(state, `Projection`, tl, br, { color, fontSize: 10 });
+            drawSectionLabel(state, L(`Projection`, `投影`), tl, br, { color, fontSize: 10 });
         }
 
         let headIdx = 0;

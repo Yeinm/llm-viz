@@ -12,6 +12,7 @@ import clsx from 'clsx';
 import { TocDiagram } from './components/TocDiagram';
 import { BlockText, DimensionText } from './components/CommentaryHelpers';
 import { useRequestAnimationFrame } from '../utils/hooks';
+import { L } from "./i18n";
 
 export function jumpToPhase(wt: IWalkthrough, phaseId: Phase) {
     wt.time = 0;
@@ -261,7 +262,7 @@ export const Commentary: React.FC = () => {
             <button className={clsx(s.btn, s.prevNextBtn)} onClick={() => handlePhaseDeltaClick(-1)}>
                 <FontAwesomeIcon icon={faChevronLeft} />
             </button>
-            <div className={s.chapterTitle}>Chapter: {phase.title}</div>
+            <div className={s.chapterTitle}>{L('Chapter: ', '章节：')}{phase.title}</div>
             <button className={clsx(s.btn, s.prevNextBtn)} onClick={() => handlePhaseDeltaClick(1)}>
                 <FontAwesomeIcon icon={faChevronRight} />
             </button>
@@ -284,10 +285,10 @@ export const Commentary: React.FC = () => {
         </div>
         <div className={s.controls}>
             <button className={clsx(s.btn, "flex-[2] bg-blue-300 border border-blue-600 hover:bg-blue-400")} onClick={handleContinueClick}>
-                <div>Continue</div>
+                <div>{L('Continue', '继续')}</div>
             </button>
             <button className={clsx(s.btn, "ml-4 min-w-[100px] bg-white border border-blue-600 hover:bg-blue-200")} onClick={handleAdvanceClick}>
-                <div>Skip</div>
+                <div>{L('Skip', '跳过')}</div>
             </button>
         </div>
     </>;
@@ -524,7 +525,7 @@ const SpaceToContinueHint: React.FC<{
 
     return <div className={"absolute flex justify-center pointer-events-none top-0 left-0 right-0"} style={{ top, transform: `translateY(20px)` }}>
         <div className={"flex-shrink py-2 px-4 bg-blue-200 shadow-md rounded-3xl pointer-events-auto text-black cursor-pointer"} onClick={onClick}>
-             Press <span className={s.key}>Space</span> to continue
+             {L('Press ', '按 ')}<span className={s.key}>{L('Space', '空格')}</span>{L(' to continue', ' 继续')}
         </div>
     </div>;
 }

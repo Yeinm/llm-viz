@@ -5,6 +5,7 @@ import { RenderPhase } from "../render/sharedRender";
 import { Mat4f } from "@/src/utils/matrix";
 import { Vec3, Vec4 } from "@/src/utils/vector";
 import { drawRoundedRect } from "./DataFlow";
+import { resolveName } from "../i18n";
 
 export function drawBlockInfo(state: IProgramState) {
 
@@ -25,7 +26,7 @@ export function drawBlockInfo(state: IProgramState) {
         }
 
         // draw text, centered on top of the block
-        let text = blk.name;
+        let text = resolveName(blk.name);
         let mtx = Mat4f.fromTranslation(blkTopMid);
         let textOpts: IFontOpts = { color: textColor, size: scale * 2.5, mtx };
         let textW = measureText(state.render.modelFontBuf, text, textOpts);

@@ -1,0 +1,21 @@
+.wrap {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 20;
+}
+
+.btn {
+    background: #223;
+    color: #eef;
+    border: 1px solid #556;
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.btn:hover {
+    background: #334;
+}

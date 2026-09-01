@@ -20,6 +20,8 @@ import { WelcomePopup } from './WelcomePopup';
 import { KeyboardManagerContext, KeyboardOrder, useGlobalKeyboard } from '@/src/utils/keyboard';
 import { Resizer } from '../utils/Resizer';
 import { ModelSelectorToolbar } from './components/ModelSelectorToolbar';
+import { LanguageToggle } from './components/LanguageToggle';
+import { L } from "./i18n";
 
 async function fetchTensorData(url: string): Promise<ITensorSet> {
     let resp = await fetch(url);
@@ -198,8 +200,8 @@ export function LayerView() {
             ref={setCanvasEl}
         />
         {canvasRender && !canvasRender.progState.render && <div className='absolute flex flex-col items-center w-full h-full justify-center'>
-            <div className='text-2xl'>This application requires a WebGL2 capable browser.</div>
-            <div className='text-lg mt-2'>Please try the latest version of Chrome or Firefox.</div>
+            <div className='text-2xl'>{L('This application requires a WebGL2 capable browser.', '此应用需要支持 WebGL2 的浏览器。')}</div>
+            <div className='text-lg mt-2'>{L('Please try the latest version of Chrome or Firefox.', '请使用最新版 Chrome 或 Firefox。')}</div>
         </div>}
         {/* <div className={s.cursorFollow} style={{ top: pointPos.y, left: pointPos.x }} /> */}
         {canvasRender && <ProgramStateContext.Provider value={canvasRender.progState}>
@@ -213,6 +215,7 @@ export function LayerView() {
                 </button>
             </div> */}
             <ModelSelectorToolbar />
+            <LanguageToggle />
         </ProgramStateContext.Provider>}
     </div>;
 

@@ -6,6 +6,7 @@ import { Vec3, Vec4 } from "@/src/utils/vector";
 import { IWalkthrough, Phase, PhaseGroup } from "./Walkthrough";
 import { IProgramState } from "../Program";
 import { ICameraPos } from "../Camera";
+import { L } from "../i18n";
 
 export interface IWalkthroughArgs {
     state: IProgramState;
@@ -398,7 +399,7 @@ export function dimStyleColor(style: DimStyle) {
 
 export function dimStyleText(style: DimStyle) {
     switch (style) {
-        case DimStyle.TokenIdx: return 'Token Index';
+        case DimStyle.TokenIdx: return L('Token Index', '词元索引');
         case DimStyle.C4: return 'C * 4';
         default: return DimStyle[style];
     }
