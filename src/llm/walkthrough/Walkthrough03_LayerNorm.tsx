@@ -24,10 +24,10 @@ export function walkthrough03_LayerNorm(args: IWalkthroughArgs) {
 
     commentary(wt, null, 0)`
 
-The  ${c_blockRef('_input embedding_', state.layout.residual0)} matrix from the previous section is the input to our first Transformer block.
+上一节中的 ${c_blockRef('_输入嵌入_', state.layout.residual0)} 矩阵是我们第一个变换器（Transformer）块的输入。
 
-The first step in the Transformer block is to apply _layer normalization_ to this matrix. This is an
-operation that normalizes the values in each column of the matrix separately.`;
+变换器块的第一步是对该矩阵应用 _层归一化（LayerNorm）_。这是一个
+对矩阵中每一列的值分别进行归一化的操作。`;
     breakAfter();
 
     let t_moveCamera = afterTime(null, 1.0);
@@ -37,10 +37,10 @@ operation that normalizes the values in each column of the matrix separately.`;
 
     breakAfter();
     commentary(wt)`
-Normalization is an important step in the training of deep neural networks, and it helps improve the
-stability of the model during training.
+归一化是深度神经网络训练中的一个重要步骤，它有助于提高
+模型在训练过程中的稳定性。
 
-We can regard each column separately, so let's focus on the 4th column (${c_dimRef('t = 3', DimStyle.T)}) for now.`;
+我们可以单独考察每一列，所以现在先聚焦于第 4 列（${c_dimRef('t = 3', DimStyle.T)}）。`;
 
     breakAfter();
     let t_focusColumn = afterTime(null, 0.5);
@@ -49,8 +49,8 @@ We can regard each column separately, so let's focus on the 4th column (${c_dimR
     // sigma ascii: \u03c3
     breakAfter();
     commentary(wt)`
-The goal is to make the average value in the column equal to 0 and the standard deviation equal to 1. To do this,
-we find both of these quantities (${c_blockRef('mean (\u03bc)', ln.lnAgg1)} & ${c_blockRef('std dev (\u03c3)', ln.lnAgg2)}) for the column and then subtract the average and divide by the standard deviation.`;
+目标是让这一列的平均值等于 0、标准差等于 1。为此，
+我们需要求出这一列的这两个量（${c_blockRef('均值（mean，\u03bc）', ln.lnAgg1)} & ${c_blockRef('标准差（std dev，\u03c3）', ln.lnAgg2)}），然后减去平均值并除以标准差。`;
 
     breakAfter();
 
@@ -61,13 +61,13 @@ we find both of these quantities (${c_blockRef('mean (\u03bc)', ln.lnAgg1)} & ${
 
     breakAfter();
     commentary(wt)`
-The notation we use here is E[x] for the average and Var[x] for the variance (of the column of length ${c_dimRef('C', DimStyle.C)}). The
-variance is simply the standard deviation squared. The epsilon term (ε = ${<>1&times;10<sup>-5</sup></>}) is there to prevent division by zero.
+这里我们使用的记号是：用 E[x] 表示平均值，用 Var[x] 表示方差（针对长度为 ${c_dimRef('C', DimStyle.C)} 的列）。方差
+其实就是标准差的平方。引入 epsilon 项（ε = ${<>1&times;10<sup>-5</sup></>}）是为了防止除以零。
 
-We compute and store these values in our aggregation layer since we're applying them to all values in the column.
+由于我们要把这些值应用到该列的所有数值上，因此我们会在聚合层中计算并存储它们。
 
-Finally, once we have the normalized values, we multiply each element in the column by a learned
-${c_blockRef('weight (\u03b3)', ln.lnSigma)} and then add a ${c_blockRef('bias (β)', ln.lnMu)} value, resulting in our ${c_blockRef('normalized values', ln.lnResid)}.`;
+最后，一旦我们得到归一化后的值，就会让这一列中的每个元素乘以一个经过学习的
+${c_blockRef('权重（weight，\u03b3）', ln.lnSigma)}，再加上一个 ${c_blockRef('偏置（bias，β）', ln.lnMu)}，最终得到我们的 ${c_blockRef('归一化值', ln.lnResid)}。`;
 
     breakAfter();
 
@@ -77,8 +77,8 @@ ${c_blockRef('weight (\u03b3)', ln.lnSigma)} and then add a ${c_blockRef('bias (
 
     breakAfter();
     commentary(wt)`
-We run this normalization operation on each column of the ${c_blockRef('input embedding matrix', layout.residual0)}, and the result is
-the ${c_blockRef('normalized input embedding', ln.lnResid)}, which is ready to be passed into the Self-Attention layer.
+我们对 ${c_blockRef('输入嵌入矩阵', layout.residual0)} 的每一列都执行这一归一化操作，得到的结果
+就是 ${c_blockRef('归一化输入嵌入', ln.lnResid)}，它已经准备好被送入自注意力（Self-Attention）层。
 `;
 
     breakAfter();

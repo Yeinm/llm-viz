@@ -398,7 +398,7 @@ export function dimStyleColor(style: DimStyle) {
 
 export function dimStyleText(style: DimStyle) {
     switch (style) {
-        case DimStyle.TokenIdx: return 'Token Index';
+        case DimStyle.TokenIdx: return '词元索引';
         case DimStyle.C4: return 'C * 4';
         default: return DimStyle[style];
     }

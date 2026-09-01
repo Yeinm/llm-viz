@@ -198,8 +198,8 @@ export function LayerView() {
             ref={setCanvasEl}
         />
         {canvasRender && !canvasRender.progState.render && <div className='absolute flex flex-col items-center w-full h-full justify-center'>
-            <div className='text-2xl'>This application requires a WebGL2 capable browser.</div>
-            <div className='text-lg mt-2'>Please try the latest version of Chrome or Firefox.</div>
+            <div className='text-2xl'>此应用需要支持 WebGL2 的浏览器。</div>
+            <div className='text-lg mt-2'>请使用最新版 Chrome 或 Firefox。</div>
         </div>}
         {/* <div className={s.cursorFollow} style={{ top: pointPos.y, left: pointPos.x }} /> */}
         {canvasRender && <ProgramStateContext.Provider value={canvasRender.progState}>

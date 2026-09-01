@@ -13,8 +13,8 @@
             "yoffset": 2,
             "xadvance": 19,
             "chnl": 15,
-            "x": 395,
-            "y": 123,
+            "x": 86,
+            "y": 332,
             "page": 0
         },
         {
@@ -27,8 +27,8 @@
             "yoffset": 17,
             "xadvance": 32,
             "chnl": 15,
-            "x": 400,
-            "y": 189,
+            "x": 38,
+            "y": 464,
             "page": 0
         },
         {
@@ -41,8 +41,8 @@
             "yoffset": 14,
             "xadvance": 11,
             "chnl": 15,
-            "x": 408,
-            "y": 158,
+            "x": 98,
+            "y": 295,
             "page": 0
         },
         {
@@ -55,8 +55,8 @@
             "yoffset": 14,
             "xadvance": 11,
             "chnl": 15,
-            "x": 352,
-            "y": 24,
+            "x": 35,
+            "y": 558,
             "page": 0
         },
         {
@@ -69,8 +69,8 @@
             "yoffset": 28,
             "xadvance": 11,
             "chnl": 15,
-            "x": 319,
-            "y": 91,
+            "x": 71,
+            "y": 240,
             "page": 0
         },
         {
@@ -83,8 +83,8 @@
             "yoffset": 22,
             "xadvance": 14,
             "chnl": 15,
-            "x": 131,
-            "y": 250,
+            "x": 79,
+            "y": 429,
             "page": 0
         },
         {
@@ -97,8 +97,8 @@
             "yoffset": 28,
             "xadvance": 11,
             "chnl": 15,
-            "x": 0,
-            "y": 248,
+            "x": 44,
+            "y": 112,
             "page": 0
         }
     ],
@@ -135,8 +135,8 @@
     "common": {
         "lineHeight": 38,
         "base": 32,
-        "scaleW": 512,
-        "scaleH": 256,
+        "scaleW": 1024,
+        "scaleH": 1024,
         "pages": 1,
         "packed": 0,
         "alphaChnl": 0,

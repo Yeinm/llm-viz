@@ -85,23 +85,23 @@ export function initWalkthrough() {
         phaseTransitiveData: null as any,
         phaseList: [{
             groupId: PhaseGroup.Intro,
-            title: 'Introduction',
+            title: '介绍',
             phases: [
-                { id: Phase.Intro_Intro, title: 'Overview' },
-                { id: Phase.Intro_Prelim, title: 'Preliminary' },
+                { id: Phase.Intro_Intro, title: '总览' },
+                { id: Phase.Intro_Prelim, title: '预备知识' },
             ],
         }, {
             groupId: PhaseGroup.Detailed_Input,
-            title: 'Detailed',
+            title: '详细讲解',
             phases: [
-                { id: Phase.Input_Detail_Embedding, title: 'Embedding' },
-                { id: Phase.Input_Detail_LayerNorm, title: 'Layer Norm' },
-                { id: Phase.Input_Detail_SelfAttention, title: 'Self Attention' },
-                { id: Phase.Input_Detail_Projection, title: 'Projection' },
+                { id: Phase.Input_Detail_Embedding, title: '嵌入' },
+                { id: Phase.Input_Detail_LayerNorm, title: '层归一化' },
+                { id: Phase.Input_Detail_SelfAttention, title: '自注意力' },
+                { id: Phase.Input_Detail_Projection, title: '投影' },
                 { id: Phase.Input_Detail_Mlp, title: 'MLP' },
-                { id: Phase.Input_Detail_Transformer, title: 'Transformer' },
+                { id: Phase.Input_Detail_Transformer, title: 'Transformer 模块' },
                 { id: Phase.Input_Detail_Softmax, title: 'Softmax' },
-                { id: Phase.Input_Detail_Output, title: 'Output' },
+                { id: Phase.Input_Detail_Output, title: '输出' },
             ],
         }] as IPhaseGroup[],
     };

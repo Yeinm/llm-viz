@@ -24,20 +24,19 @@ export function walkthrough07_Mlp(args: IWalkthroughArgs) {
 
     commentary(wt)`
 
-The next half of the transformer block, after the self-attention, is the MLP (multi-layer
-perceptron). A bit of a mouthful, but here it's a simple neural network with two layers.
+Transformer 块中紧随自注意力之后的后半部分，就是 MLP（多层感知机，multi-layer perceptron）。名字有点拗口，不过在这里它就是一个只有两层的简单神经网络。
 
-Like with self-attention, we perform a ${c_blockRef('layer normalization', block.ln2.lnResid)} before the vectors enter the MLP.
+与自注意力类似，在向量进入 MLP 之前，我们同样会先执行一次 ${c_blockRef('层归一化（Layer Normalization）', block.ln2.lnResid)}。
 
-In the MLP, we put each of our ${c_dimRef('C = 48', DimStyle.C)} length column vectors (independently) through:
+在 MLP 中，我们把每个长度为 ${c_dimRef('C = 48', DimStyle.C)} 的列向量（彼此独立地）依次经过：
 
-1. A ${c_blockRef('linear transformation', block.mlpFcWeight)} with a ${c_blockRef('bias', block.mlpFcBias)} added, to a vector of length ${c_dimRef('4 * C', DimStyle.C4)}.
+1. 一次 ${c_blockRef('线性变换', block.mlpFcWeight)}，并加上 ${c_blockRef('偏置', block.mlpFcBias)}，得到一个长度为 ${c_dimRef('4 * C', DimStyle.C4)} 的向量。
 
-2. A GELU activation function (element-wise)
+2. 一个 GELU 激活函数（逐元素）
 
-3. A ${c_blockRef('linear transformation', block.mlpProjWeight)} with a ${c_blockRef('bias', block.mlpProjBias)} added, back to a vector of length ${c_dimRef('C', DimStyle.C)}
+3. 一次 ${c_blockRef('线性变换', block.mlpProjWeight)}，并加上 ${c_blockRef('偏置', block.mlpProjBias)}，再变回长度为 ${c_dimRef('C', DimStyle.C)} 的向量
 
-Let's track one of those vectors:
+让我们来跟踪其中一个向量：
 `;
     breakAfter();
 
@@ -46,8 +45,8 @@ Let's track one of those vectors:
     breakAfter();
 
 commentary(wt)`
-We first run through the matrix-vector multiplication with bias added, expanding the vector to length ${c_dimRef('4 * C', DimStyle.C4)}. (Note that the output matrix is transposed here.
-This is purely for vizualization purposes.)
+我们首先执行带偏置的矩阵-向量乘法，把向量扩展到长度为 ${c_dimRef('4 * C', DimStyle.C4)}。（请注意，这里的输出矩阵被转置了。
+这纯粹是为了便于可视化展示。）
 `;
     breakAfter();
 
@@ -56,8 +55,8 @@ This is purely for vizualization purposes.)
     breakAfter();
 
 commentary(wt)`
-Next, we apply the GELU activation function to each element of the vector. This is a key part of any neural network, where we introduce some non-linearity into the model. The specific function used, GELU,
-looks a lot like a ReLU function (computed as ${<code>max(0, x)</code>}), but it has a smooth curve rather than a sharp corner.
+接下来，我们对向量的每个元素应用 GELU 激活函数。这是任何神经网络中的关键部分，我们由此为模型引入一些非线性。这里所用的具体函数 GELU，
+看起来与 ReLU 函数（计算方式为 ${<code>max(0, x)</code>}）非常相似，但它的曲线是平滑的，而不是锐利的折角。
 
 ${<ReluGraph />}
 
@@ -69,7 +68,7 @@ ${<ReluGraph />}
     breakAfter();
 
 commentary(wt)`
-We then project the vector back down to length ${c_dimRef('C', DimStyle.C)} with another matrix-vector multiplication with bias added.
+然后，我们再通过一次带偏置的矩阵-向量乘法，把向量投影回长度为 ${c_dimRef('C', DimStyle.C)}。
 `;
     breakAfter();
 
@@ -78,7 +77,7 @@ We then project the vector back down to length ${c_dimRef('C', DimStyle.C)} with
     breakAfter();
 
 commentary(wt)`
-Like in the self-attention + projection section, we add the result of the MLP to its input, element-wise.
+与「自注意力 + 投影」部分类似，我们把 MLP 的结果逐元素地加到它的输入上。
 `;
     breakAfter();
 
@@ -86,7 +85,7 @@ Like in the self-attention + projection section, we add the result of the MLP to
 
     breakAfter();
 commentary(wt)`
-We can now repeat this process for all of the columns in the input.`;
+现在，我们可以对输入中的所有列重复这个过程。`;
 
     breakAfter();
 
@@ -97,7 +96,7 @@ We can now repeat this process for all of the columns in the input.`;
     breakAfter();
 
 commentary(wt)`
-And that's the MLP completed. We now have the output of the transformer block, which is ready to be passed to the next block.
+到这里，MLP 就完成了。我们现在得到了 Transformer 块的输出，它已经准备好传给下一个块了。
 `;
 
     let targetIdx = 3;
